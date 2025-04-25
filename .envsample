@@ -1,0 +1,5 @@
+DB_HOST=localhost
+DB_PORT=<5432 | PORT>
+DB_NAME=<Your DB Name>
+DB_USER=<postgres | Your Postgress Server username>
+DB_PASSWORD=<Your Postgress Server password>
