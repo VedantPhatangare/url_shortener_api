@@ -33,6 +33,10 @@ DB_PASSWORD=<your-db-password>
 
 ### Installation
 
+You can run this project either using traditional Python setup or Docker.
+
+#### Option 1: Traditional Setup
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/VedantPhatangare/url_shortener_api.git
@@ -64,9 +68,29 @@ CREATE TABLE urls (
 );
 ```
 
+#### Option 2: Docker Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/VedantPhatangare/url_shortener_api.git
+cd <repository-directory>
+```
+
+2. Create a .env file with your database configuration:
+```
+DB_NAME=your_db_name
+DB_USER=your_db_user
+DB_PASSWORD=your_password
+```
+
+3. Start the services:
+```bash
+docker-compose up -d
+```
+
 ### Quick Start
 
-1. Start the server:
+1. Start the server (if using traditional setup):
 ```bash
 uvicorn app.main:app --reload
 ```
@@ -92,7 +116,7 @@ response = requests.post(
     json={"long_url": "https://example.com/very/long/url"}
 )
 print(response.json())
-# Output: {"shorten_url": "http://localhost:8000/ab12cd3f"}
+# Output: {"shorten _url": "http://localhost:8000/ab12cd3f"}
 ```
 
 2. Handling redirects programmatically:
@@ -102,6 +126,47 @@ import requests
 response = requests.get("http://localhost:8000/ab12cd3f", allow_redirects=False)
 if response.status_code == 307:
     print(f"Redirecting to: {response.headers['Location']}")
+```
+
+### Testing with Postman
+
+1. Set up a new Postman Collection:
+   - Create a new collection named "URL Shortener API"
+   - Set base URL variable to `http://localhost:8000`
+
+2. Create URL Shortening Request:
+```
+Method: POST
+URL: {{base_url}}/shorten
+Headers: 
+  Content-Type: application/json
+Body (raw JSON):
+{
+    "long_url": "https://example.com/very/long/url"
+}
+
+Expected Response (200 OK):
+{
+    "shorten _url": "http://localhost:8000/ab12cd3f"
+}
+```
+
+3. Test URL Redirection:
+```
+Method: GET
+URL: {{base_url}}/ab12cd3f
+
+Expected Response: 307 Temporary Redirect
+Response Headers should include:
+Location: https://example.com/very/long/url
+```
+
+4. Error Test Cases:
+```
+- Empty long_url (POST /shorten):
+  Expected: 404 Not Found with "long_url required" message
+- Invalid short code (GET /invalid):
+  Expected: 404 Not Found with "URL not found" message
 ```
 
 ### Troubleshooting
