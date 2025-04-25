@@ -35,7 +35,7 @@ DB_PASSWORD=<your-db-password>
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/VedantPhatangare/url_shortener_api.git
 cd <repository-directory>
 ```
 
